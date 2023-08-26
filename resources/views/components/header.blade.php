@@ -6,8 +6,9 @@
       </svg>
       <span class="ml-3 text-xl">WebGigs</span>
     </a>
+    
     <nav class="md:ml-auto flex flex-wrap items-center text-base justify-center">
-      <a href="{{ route('login') }}" class="mr-5 hover:text-gray-900"Employers></a>
+      <a href="{{ route('login') }}" class="mr-5 hover:text-gray-900">Employers</a>
     
     </nav>
     <a href="{{ route('listings.create') }}" class="inline-flex items-center bg-gray-100 border-2 border-indigo-600 py-1 px-3 focus:outline-none hover:bg-gray-200 rounded text-base mt-4 md:mt-0 text-black">Post Job
