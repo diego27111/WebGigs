@@ -10,6 +10,13 @@ use Laravel\Sanctum\HasApiTokens;
 
 use Laravel\Cashier\Billable;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+// use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
+
+use Laravel\Cashier\Billable;
+
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable, Billable;
@@ -45,7 +52,22 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
+    /**
+     * The attributes for which can use sort in url.
+     *
+     * @var array
+     */
+    protected $allowedSorts = [
+        'id',
+        'name',
+        'email',
+        'updated_at',
+        'created_at',
+    ];
+
+
     public function listings() {
         return $this->hasMany(Listing::class);
     }
 }
+
