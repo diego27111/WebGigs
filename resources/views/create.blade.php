@@ -25,7 +25,7 @@
                 @guest
                     <div class="flex mb-4">
                         <div class="flex-1 mx-2">
-                            <x-input-label for="email" value="Email Address" />
+                            <x-label for="email" value="Email Address" />
                             <x-input
                                 class="block mt-1 w-full"
                                 id="email"
@@ -36,7 +36,7 @@
                                 autofocus />
                         </div>
                         <div class="flex-1 mx-2">
-                            <x-input-label for="name" value="Full Name" />
+                            <x-label for="name" value="Full Name" />
                             <x-input
                                 class="block mt-1 w-full"
                                 id="name"
@@ -48,7 +48,7 @@
                     </div>
                     <div class="flex mb-4">
                         <div class="flex-1 mx-2">
-                            <x-input-label for="password" value="Password" />
+                            <x-label for="password" value="Password" />
                             <x-input
                                 class="block mt-1 w-full"
                                 id="password"
@@ -57,7 +57,7 @@
                                 required />
                         </div>
                         <div class="flex-1 mx-2">
-                            <x-input-label for="password_confirmation" value="Confirm Password" />
+                            <x-label for="password_confirmation" value="Confirm Password" />
                             <x-input
                                 class="block mt-1 w-full"
                                 id="password_confirmation"
@@ -68,7 +68,7 @@
                     </div>
                 @endguest
                 <div class="mb-4 mx-2">
-                    <x-input-label for="title" value="Job Title" />
+                    <x-label for="title" value="Job Title" />
                     <x-input
                         id="title"
                         class="block mt-1 w-full"
@@ -77,7 +77,7 @@
                         required />
                 </div>
                 <div class="mb-4 mx-2">
-                    <x-input-label for="company" value="Company Name" />
+                    <x-label for="company" value="Company Name" />
                     <x-input
                         id="company"
                         class="block mt-1 w-full"
@@ -86,7 +86,7 @@
                         required />
                 </div>
                 <div class="mb-4 mx-2">
-                    <x-input-label for="logo" value="Company Logo" />
+                    <x-label for="logo" value="Company Logo" />
                     <x-input
                         id="logo"
                         class="block mt-1 w-full"
@@ -94,7 +94,7 @@
                         name="logo" />
                 </div>
                 <div class="mb-4 mx-2">
-                    <x-input-label for="location" value="Location (e.g. Remote, United States)" />
+                    <x-label for="location" value="Location (e.g. Remote, United States)" />
                     <x-input
                         id="location"
                         class="block mt-1 w-full"
@@ -103,7 +103,7 @@
                         required />
                 </div>
                 <div class="mb-4 mx-2">
-                    <x-input-label for="apply_link" value="Link To Apply" />
+                    <x-label for="apply_link" value="Link To Apply" />
                     <x-input
                         id="apply_link"
                         class="block mt-1 w-full"
@@ -112,7 +112,7 @@
                         required />
                 </div>
                 <div class="mb-4 mx-2">
-                    <x-input-label for="tags" value="Tags (separate by comma)" />
+                    <x-label for="tags" value="Tags (separate by comma)" />
                     <x-input
                         id="tags"
                         class="block mt-1 w-full"
@@ -120,7 +120,7 @@
                         name="tags" />
                 </div>
                 <div class="mb-4 mx-2">
-                    <x-input-label for="content" value="Listing Content (Markdown is okay)" />
+                    <x-label for="content" value="Listing Content (Markdown is okay)" />
                     <textarea
                         id="content"
                         rows="8"
@@ -129,7 +129,7 @@
                     ></textarea>
                 </div>
                 <div class="mb-4 mx-2">
-                    <input-label for="is_highlighted" class="inline-flex items-center font-medium text-sm text-gray-700">
+                    <label for="is_highlighted" class="inline-flex items-center font-medium text-sm text-gray-700">
                         <input
                             type="checkbox"
                             id="is_highlighted"
@@ -137,7 +137,7 @@
                             value="Yes"
                             class="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-offset-0 focus:ring-indigo-200 focus:ring-opacity-50">
                         <span class="ml-2">Highlight this post (extra $19)</span>
-                    </input-label>
+                    </label>
                 </div>
                 <div class="mb-6 mx-2">
                     <div id="card-element"></div>
