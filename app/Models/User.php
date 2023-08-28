@@ -7,8 +7,18 @@ use Orchid\Filters\Types\Where;
 use Orchid\Filters\Types\WhereDateStartEnd;
 use Orchid\Platform\Models\User as Authenticatable;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+// use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
+
+use Laravel\Cashier\Billable;
+
 class User extends Authenticatable
 {
+
+    use HasApiTokens, HasFactory, Notifiable, Billable;
+
     /**
      * The attributes that are mass assignable.
      *
@@ -67,4 +77,9 @@ class User extends Authenticatable
         'updated_at',
         'created_at',
     ];
+
+    public function listings() {
+        return $this->hasMany(Listing::class);
+    }
 }
+
