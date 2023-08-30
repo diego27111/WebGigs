@@ -42,3 +42,10 @@ Route::get('/{listing}', [ListingController::class, 'show'])->name('listings.sho
 
 Route::get('/{listing}/apply', [ListingController::class, 'apply'])->name('listings.apply');
 
+Route::get('/{listing}/edit', [ListingController::class, 'edit'])->name('listing.edit')->middleware('auth');
+
+Route::put('{listing}', [ListingController::class, 'update'])->name('listing.update')->middleware('auth');
+
+// Create Delete Function
+
+Route::delete('{listing}', [ListingController::class, 'destroy'])->name('listing.destroy')->middleware('auth');

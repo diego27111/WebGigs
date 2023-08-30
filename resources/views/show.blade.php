@@ -1,7 +1,22 @@
 <x-app-layout>
     <section class="text-gray-600 body-font overflow-hidden">
-        <div class="container px-5 py-24 mx-auto">
+        <div class="container px-5 py-8 mx-auto">
             <div class="mb-12">
+            @if(auth()->check() && auth()->user()->id === $listing->user_id)
+            <a href="{{ route('listing.edit', $listing) }}">
+                <button class="mb-5 mr-3 bg-green-500 hover:bg-green-400 text-white font-bold py-2 px-4 border-b-4 border-green-700 hover:border-green-500 rounded">
+                    Edit
+                </button>
+            </a>
+            <form action="{{ route('listing.destroy', $listing) }}" method="POST" class="inline">
+                @csrf
+                @method('DELETE')
+                    <button class="mb-5 bg-red-500 hover:bg-red-400 text-white font-bold py-2 px-4 border-b-4 border-red-700 hover:border-red-500 rounded">
+                        Delete
+                    </button>
+            </form>
+            @endif
+
                 <h2 class="text-4xl font-medium text-gray-900 title-font">
                     {{ $listing->title }}
                 </h2>
