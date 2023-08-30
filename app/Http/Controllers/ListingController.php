@@ -150,4 +150,61 @@ class ListingController extends Controller
                 ->withErrors(['error' => $e->getMessage()]);
         }
     }
+
+    public function edit(Listing $listing) {
+        return view('edit', compact('listing'));
+    }
+
+
+    // Fix this
+    public function update(Request $request, Listing $listing) {
+            // Make sure logged in user is owner
+        if($listing->user_id != auth()->id()) {
+            abort(403, 'Unauthorized Action');
+        }
+
+        $validationArray =[
+            'title' => 'required',
+            'company' => 'required',
+            'location' => 'required',
+            'apply_link' => 'url',
+            'content' => '',
+            'payment_method_id' => ''
+        ];
+
+        if(!Auth::check()) {
+            $validationArray = array_merge($validationArray, [
+                'email' => 'required|email|unique:users',
+                'password' => 'required|confirmed|min:5',
+                'name' => 'required'
+            ]);
+        }
+
+
+
+        //////////////////
+        $validatedData = $request->validate($validationArray);
+
+        if ($request->hasFile('logo')) {
+            $logoPath = basename($request->file('logo')->store('public'));
+            $validatedData['logo'] = $logoPath;
+        }
+        
+
+        $listing->update($validatedData);
+
+        return redirect('/')->with('message', 'Note Updated successfully!');
+        
+    }
+
+    public function destroy(Listing $listing) {
+
+        if($listing->user_id != auth()->id()) {
+            abort(403, 'Unothorized Action');
+        }
+
+        $listing->delete();
+
+        return redirect('/')->with('message', 'Listing Deleted Successfully');
+    }
 }
