@@ -16,15 +16,21 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // \App\Models\Listing::factory(10)->create();
         
+
         $tags = Tag::factory(10)->create();
 
         User::factory(20)->create()->each(function($user) use($tags){
             Listing::factory(rand(1, 4))->create([
                 'user_id' => $user->id
             ])->each(function($listing) use($tags){
-                $listing->tags()->attach($tags->random(2));
+                $specialTags = $tags->random(2);
+                
+                $listing->tags()->attach($specialTags);
+                // For every time a listing has a tag it adds 1 to the column called 'used' on my tags database 
+                foreach ($specialTags as $tag) {
+                    $tag->increment('used');
+                }
             });
         });
 

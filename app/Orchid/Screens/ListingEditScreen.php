@@ -92,12 +92,12 @@ class ListingEditScreen extends Screen
                     ->placeholder('Attractive but mysterious title')
                     ->help('Specify a short descriptive title for this listing.'),
 
-                Relation::make('listing.company')
-                    ->title('Author')
-                    ->fromModel(User::class, 'name'),
+                Input::make('listing.company')
+                    ->title('company')
+                    ->fromModel(User::class, 'company'),
 
                 Quill::make('listing.content')
-                    ->title('Main text'),
+                    ->title('Content'),
 
             ])
         ];

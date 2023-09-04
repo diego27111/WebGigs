@@ -133,7 +133,7 @@ class ListingsScreen extends Screen
 
         $listing = new Listing();
         $listing->title = $request->input('listing.title');
-        $listing->user_id = 23;
+        $listing->user_id = 21;
         $listing->slug = Str::slug($request->input('listing.title')) . '-' . rand(1111, 9999);
         $listing->company = $request->input('listing.company');
         $listing->location = $request->input('listing.location');
