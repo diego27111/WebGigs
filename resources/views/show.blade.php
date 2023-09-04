@@ -20,6 +20,9 @@
                 <h2 class="text-4xl font-medium text-gray-900 title-font">
                     {{ $listing->title }}
                 </h2>
+
+                <span class="text-green-600 text-xl">  US${{ $listing->salary}}</span>
+
                 <div class="md:flex-grow mr-8 mt-2 flex items-center justify-start">
                     @foreach($listing->tags as $tag)
                         <span class="rounded inline-block mr-2 tracking-wide text-indigo-500 text-s font-medium title-font py-0.5 px-1.5 border border-indigo-500 uppercase">{{ $tag->name }}</span>

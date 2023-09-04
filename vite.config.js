@@ -11,4 +11,9 @@ export default defineConfig({
             refresh: true,
         }),
     ],
+    server: {
+        host: 'sample.test', // Set the correct domain here
+        port: 3000, // Set the correct port here
+    },
+    publicDir: 'public',
 });

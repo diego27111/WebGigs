@@ -102,6 +102,17 @@
                         name="location"
                         required />
                 </div>
+                
+                <div class="mb-4 mx-2">
+                    <x-input-label for="salary" value="Salary in $USD" />
+                    <x-input
+                        id="salary"
+                        class="block mt-1 w-full"
+                        type="text"
+                        name="salary"
+                        required />
+                </div>
+
                 <div class="mb-4 mx-2">
                     <x-input-label for="apply_link" value="Link To Apply" />
                     <x-input

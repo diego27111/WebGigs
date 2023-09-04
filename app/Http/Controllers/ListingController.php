@@ -16,46 +16,62 @@ use Hash;
 class ListingController extends Controller
 {
     public function index(Request $request) {
-        $listings = Listing::where('is_active', true)->with('tags')->latest()->get();
-
+        // Start with the base query
+        $listings = Listing::where('is_active', true)->with('tags');
+    
         $tags = Tag::orderBy('name')->get();
-
+    
         if ($request->has('s')) {
             $query = strtolower($request->get('s'));
-            $listings = $listings->filter(function($listing) use($query) {
-                if (Str::contains(strtolower($listing->title), $query)) {
-                    return true;
-                }
-
-                if (Str::contains(strtolower($listing->company), $query)) {
-                    return true;
-                }
-
-                if (Str::contains(strtolower($listing->location), $query)) {
-                    return true;
-                }
-
-                // if (Str::contains(strtolower($listing->content), $query)) {
-                //     return true;
-                // }
-
-                return false;
+            $listings = $listings->where(function ($queryBuilder) use ($query) {
+                $queryBuilder->whereRaw('LOWER(title) LIKE ?', ['%' . $query . '%'])
+                    ->orWhereRaw('LOWER(company) LIKE ?', ['%' . $query . '%'])
+                    ->orWhereRaw('LOWER(location) LIKE ?', ['%' . $query . '%']);
             });
-
-            
         }
+    
         if ($request->has('tag')) {
+            $selectedTag = $request->get('tag');
 
-            $tag = $request->get('tag');
-            $listing = $listings = $listings->filter(function($listing) use($tag) {
-                return $listing->tags->contains('slug', $tag);
+            if ($selectedTag === session('selectedTag')) {
+                $request->session()->forget('selectedTag');
+                return redirect('/');
+            } else {
+
+                $request->session()->put('selectedTag', $selectedTag);
+
+                $listings = $listings->whereHas('tags', function ($queryBuilder) use ($selectedTag) {
+                    $queryBuilder->where('slug', $selectedTag);
             });
         }
+        } else {
+            $selectedTag = session('selectedTag');
 
-        // return $listings;
+            if ($selectedTag) {
+                $listings = $listings->whereHas('tags', function ($queryBuilder) use ($selectedTag) {
+                    $queryBuilder->where('slug', $selectedTag);
+                });
+            }
+        }
+    
+        $sortBy = $request->query('sort_by', 'high_to_low');
+    
+        if ($sortBy === 'low_to_high') {
+            $listings = $listings->orderByRaw('CAST(REPLACE(salary, ",", "") AS SIGNED) ASC');
+        } elseif ($sortBy === 'high_to_low') {
+            $listings = $listings->orderByRaw('CAST(REPLACE(salary, ",", "") AS SIGNED) DESC');
+        } elseif ($sortBy === 'date_newest') {
+            $listings = $listings->orderBy('created_at', 'desc');
+        } elseif ($sortBy === 'date_oldest') {
+            $listings = $listings->orderBy('created_at', 'asc');
+        } // No need for an "else" block for "all" since it's already filtered
+    
+        // Execute the final query and retrieve the results
+        $listings = $listings->get();
+    
         return view('index', compact('listings', 'tags'));
     }
-
+    
     public function show(Listing $listing, Request $request) {
         return view('show', compact('listing'));
     }
@@ -82,7 +98,8 @@ class ListingController extends Controller
             'location' => 'required',
             'apply_link' => 'required|url',
             'content' => 'required',
-            'payment_method_id' => 'required'
+            'payment_method_id' => 'required',
+            'salary' => 'required|string',
         ];
 
         if(!Auth::check()) {
@@ -131,7 +148,8 @@ class ListingController extends Controller
                     'apply_link' => $request->apply_link,
                     'content' => $md->text($request->input('content')),
                     'is_highlighted' => $request->filled('is_highlighted'),
-                    'is_active' => true
+                    'is_active' => true,
+                    'salary' => $request->salary,
                 ]);
 
             foreach(explode(',', $request->tags) as $requestTag) {
@@ -142,6 +160,8 @@ class ListingController extends Controller
                 ]);
 
                 $tag->listings()->attach($listing->id);
+
+                $tag->increment('used');
             }
 
             return redirect()->route('dashboard');
@@ -169,7 +189,8 @@ class ListingController extends Controller
             'location' => 'required',
             'apply_link' => 'url',
             'content' => '',
-            'payment_method_id' => ''
+            'payment_method_id' => '',
+            'salary' => '',
         ];
 
         if(!Auth::check()) {
@@ -193,7 +214,23 @@ class ListingController extends Controller
 
         $listing->update($validatedData);
 
-        return redirect('/')->with('message', 'Note Updated successfully!');
+        $tagNames = collect(explode(',', $request->input('tags')))
+            ->map(fn ($tag) => trim($tag))
+            ->filter()
+            ->unique();
+
+        $tagIds = [];
+
+        foreach ($tagNames as $tagName) {
+            $tag = Tag::firstOrCreate(['name' => $tagName], ['slug' => Str::slug(trim($tagName))]);
+            $tagIds[] = $tag->id;
+            $tag->increment('used');
+        }
+
+        $listing->tags()->sync($tagIds);
+
+
+        return redirect('/')->with('message', 'Listing Updated successfully!');
         
     }
 

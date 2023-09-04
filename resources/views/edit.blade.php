@@ -65,6 +65,17 @@
                 </div>
 
                 <div class="mb-4 mx-2">
+                    <x-input-label for="salary" value="Salary in $USD"></x-input-label>
+                    <x-input
+                        id="salary"
+                        class="block mt-1 w-full"
+                        type="text"
+                        name="salary"
+                        value=" {{ $listing->salary }}"
+                    ></x-input>
+                </div>
+
+                <div class="mb-4 mx-2">
                     <x-input-label for="appky_link" value="Link To Apply"></x-input-label>
                     <x-input
                         id="apply_link"
@@ -82,7 +93,7 @@
                         class="block mt-1 w-full"
                         type="text"
                         name="tags"
-                        value=" {{ $listing->tags }}"
+                        value=" {{ implode(', ', $listing->tags->pluck('name')->toArray()) }}"
                     ></x-input>
                 </div>
 
@@ -93,7 +104,7 @@
                         class="rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 block mt-1 w-full"
                         name="content"
                         rows="8"
-                        value=" {{ $listing->content }}"
+                        value=" {{  strip_tags(html_entity_decode($listing->content))  }}"
                     ></x-input>
                 </div>
 
@@ -111,7 +122,7 @@
 
                     </input-label>
                 </div>
-                <button type="submit" id="form_submit" class="block w-full items-center bg-indigo-500 text-white border-0 py-2 focus:outline-none hover:bg-indigo-600 rounded text-base mt-4 md:mt-0">Pay + Continue</button>
+                <button type="submit" id="form_submit" class="block w-full items-center bg-indigo-500 text-white border-0 py-2 focus:outline-none hover:bg-indigo-600 rounded text-base mt-4 md:mt-0">Update</button>
 
             </form>
         </div>

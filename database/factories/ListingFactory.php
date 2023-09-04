@@ -37,7 +37,8 @@ class ListingFactory extends Factory
             'content' => $content,
             'apply_link' => $this->faker->url,
             'created_at' => $datetime,
-            'updated_at' => $datetime
+            'updated_at' => $datetime,
+            'salary' => $this->faker->numberBetween(50, 250). ',000',
         
         ];
     }
