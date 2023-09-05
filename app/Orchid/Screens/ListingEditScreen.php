@@ -5,7 +5,12 @@ namespace App\Orchid\Screens;
 
 use App\Models\Listing;
 use App\Models\User;
+use App\Models\Tag;
+
 use Illuminate\Http\Request;
+use Orchid\Screen\Fields\Cropper;
+use Orchid\Screen\Fields\Picture;
+
 use Orchid\Screen\Fields\Input;
 use Orchid\Screen\Fields\Quill;
 use Orchid\Screen\Fields\Relation;
@@ -32,8 +37,10 @@ class ListingEditScreen extends Screen
      */
     public function query(Listing $listing): array
     {
+        $listing->load('attachment');
+
         return [
-            'listing' => $listing
+            'listing' => Listing::filters()->defaultSort('id')->paginate()
         ];
     }
 
@@ -50,7 +57,7 @@ class ListingEditScreen extends Screen
      */
     public function description(): ?string
     {
-        return "Blog listings";
+        return "";
     }
 
     /**
@@ -88,16 +95,37 @@ class ListingEditScreen extends Screen
         return [
             Layout::rows([
                 Input::make('listing.title')
-                    ->title('Title')
-                    ->placeholder('Attractive but mysterious title')
+                    ->title('Job Title')
                     ->help('Specify a short descriptive title for this listing.'),
+                
+                Picture::make('picture')
+                    ->storage('listing.logo'),
+                    // ->targetRelativeUrl()
+                    // ->targetId(),
 
                 Input::make('listing.company')
-                    ->title('company')
+                    ->title('Company')
                     ->fromModel(User::class, 'company'),
+                
+                Input::make('listing.location')
+                    ->title('Location')
+                    ->fromModel(User::class, 'location'),
+                
+                Input::make('listing.salary')
+                    ->title('Salary in USD')
+                    ->fromModel(User::class, 'salary'),
+
+                Input::make('listing.apply_link')
+                    ->title('Link to apply')
+                    ->fromModel(User::class, 'apply_link'),
+
+                Input::make('tags')
+                    ->title('Tags')
+                    ->fromModel(Tag::class, 'name', 'name'),
 
                 Quill::make('listing.content')
-                    ->title('Content'),
+                    ->title('Content')
+                    ->fromModel(User::class, 'content'),
 
             ])
         ];
@@ -111,6 +139,10 @@ class ListingEditScreen extends Screen
     public function createOrUpdate(Request $request)
     {
         $this->listing->fill($request->get('listing'))->save();
+
+        $this->listing->attachment()->syncWithoutdetaching(
+            $request->input('listing.attachment', [])
+        );
 
         Alert::info('You have successfully created a listing.');
 

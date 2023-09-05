@@ -7,6 +7,8 @@ use Orchid\Screen\Actions\Link;
 use Orchid\Screen\Layouts\Table;
 use Orchid\Screen\TD;
 
+use Orchid\Screen\Fields\Input;
+
 class ListingListLayout extends Table
 {
     /**
@@ -17,7 +19,7 @@ class ListingListLayout extends Table
      *
      * @var string
      */
-    protected $target = 'listings';
+    public $target = 'listings';
 
     /**
      * Get the table cells to be displayed.
@@ -28,13 +30,15 @@ class ListingListLayout extends Table
     {
         return [
             TD::make('title', 'Title')
+                ->sort()
+                ->filter(Input::make())
                 ->render(function (Listing $listing) {
                     return Link::make($listing->title)
                     ->route('platform.listing.edit', $listing);
                 }),
             
-            TD::make('created_at', 'Created'),
-            TD::make('updated-at', 'Last edit')
+            TD::make('company', 'Company')->sort(),
+            TD::make('created_at', 'Created')->filter(Input::make())->sort(),
         ];
     }
 }

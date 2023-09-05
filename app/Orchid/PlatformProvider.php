@@ -90,7 +90,12 @@ class PlatformProvider extends OrchidServiceProvider
             Menu::make('Listings')
                 ->icon('pencil')
                 ->route('platform.listing.list')
-                ->title('Manage-Listings')
+                ->title('Manage-Listings'),
+            
+            Menu::make('Data')
+                ->icon('bs.bar-chart')
+                ->route('platform.data')
+                ->title('Data'),
         ];
     }
 

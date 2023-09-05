@@ -19,7 +19,7 @@ class ListingListScreen extends Screen
     public function query(): array
     {
         return [
-            'listings' => Listing::paginate()
+            'listings' => Listing::filters()->defaultSort('id')->paginate()
         ];
     }
 
@@ -30,7 +30,7 @@ class ListingListScreen extends Screen
      */
     public function name(): ?string
     {
-        return 'Listing';
+        return 'Listings';
     }
 
     public function description(): ? string {

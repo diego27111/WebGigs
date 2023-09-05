@@ -21,6 +21,7 @@ use Tabuna\Breadcrumbs\Trail;
 
 use App\Orchid\Screens\ListingListScreen;
 use App\Orchid\Screens\ListingEditScreen;
+use App\Orchid\Screens\dataScreen;
 
 use App\Orchid\Screens\ListingsScreen;
 
@@ -122,3 +123,6 @@ Route::screen('listing/{listing?}', ListingEditScreen::class)
 // Listing list Screen
 Route::screen('listings', ListingListScreen::class)
     ->name('platform.listing.list');
+
+Route::screen('data', dataScreen::class)
+    ->name('platform.data');
