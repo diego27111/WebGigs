@@ -14,10 +14,16 @@ use Laravel\Sanctum\HasApiTokens;
 
 use Laravel\Cashier\Billable;
 
+use Illuminate\Database\Eloquent\Model;
+use Orchid\Screen\AsSource;
+use Orchid\Attachment\Attachable;
+use Orchid\Filters\Filterable;
+use Orchid\Attachment\Models\Attachment;
+
 class User extends Authenticatable
 {
 
-    use HasApiTokens, HasFactory, Notifiable, Billable;
+    use HasApiTokens, HasFactory, Notifiable, Billable, AsSource, Attachable, Filterable;
 
     /**
      * The attributes that are mass assignable.
